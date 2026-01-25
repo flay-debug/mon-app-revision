@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#667eea">
+<link rel="manifest" href="manifest.json">
+<title>Mon App</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}.container{max-width:800px;margin:0 auto;background:#fff;border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3)}h1{text-align:center;color:#667eea;margin-bottom:30px}input{width:100%;padding:12px;margin:10px 0;border:2px solid #ddd;border-radius:8px}button{width:100%;padding:15px;background:#667eea;color:#fff;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:10px}.item{background:#f8f9fa;padding:15px;margin:10px 0;border-radius:10px;border-left:4px solid #667eea}</style>
+</head>
+<body>
+<div class="container">
+<h1>📚 Mon App</h1>
+<input type="date" id="date">
+<input type="text" id="matiere" placeholder="Matière">
+<input type="text" id="activite" placeholder="Activité">
+<button onclick="save()">Enregistrer</button>
+<div id="list"></div>
+</div>
+<script>
+if('serviceWorker'in navigator){navigator.serviceWorker.register('/sw.js')}
+let data=JSON.parse(localStorage.getItem('data')||'[]');
+function save(){const d=document.getElementById('date').value;const m=document.getElementById('matiere').value;const a=document.getElementById('activite').value;if(d&&m&&a){data.push({d,m,a});localStorage.setItem('data',JSON.stringify(data));document.getElementById('date').value='';document.getElementById('matiere').value='';document.getElementById('activite').value='';display()}}
+function display(){document.getElementById('list').innerHTML=data.slice().reverse().map(i=>`<div class="item"><strong>${i.m}</strong><br>${i.a} - ${i.d}</div>`).join('')}
+document.getElementById('date').valueAsDate=new Date();display();
+</script>
+</body>
+</html>
